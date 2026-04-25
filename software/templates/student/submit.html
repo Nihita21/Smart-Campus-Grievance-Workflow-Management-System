@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Submit Grievance{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="fw-bold mb-3">Submit a Grievance</h2>
+  <p class="text-muted">Fill in the details below to raise a complaint.</p>
+
+  <div class="card p-4 shadow-sm mt-3">
+    <form method="POST" enctype="multipart/form-data">
+
+```
+  <!-- Title -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Title</label>
+    <input type="text" name="title" class="form-control" placeholder="Enter grievance title" required>
+  </div>
+
+  <!-- Category -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Category</label>
+    <select name="category_id" class="form-select" required>
+      <option value="">Select Category</option>
+
+      {% if categories %}
+        {% for cat in categories %}
+          <option value="{{ cat['_id'] }}">{{ cat['name'] }}</option>
+        {% endfor %}
+      {% else %}
+        <option disabled>No categories available</option>
+      {% endif %}
+
+    </select>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Description</label>
+    <textarea name="description" rows="4" class="form-control" placeholder="Describe your issue..." required></textarea>
+  </div>
+
+  <!-- File Upload -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Attach File (optional)</label>
+    <input type="file" name="attachment" class="form-control">
+    <small class="text-muted">
+      Allowed: pdf, png, jpg, jpeg, docx
+    </small>
+  </div>
+
+  <!-- Priority -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Priority</label>
+    <select name="priority" class="form-select">
+      <option value="low">Low</option>
+      <option value="medium" selected>Medium</option>
+      <option value="high">High</option>
+    </select>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" class="btn btn-primary w-100 fw-bold">
+    <i class="bi bi-send me-1"></i> Submit Grievance
+  </button>
+
+</form>
+```
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2 class="fw-bold mb-4">Reports & Analytics</h2>
+
+  <!-- 🔷 Stats Section -->
+
+  <div class="row mb-4">
+
+```
+<div class="col-md-3">
+  <div class="card shadow-sm text-center p-3 bg-primary text-white">
+    <h6>Total</h6>
+    <h3>{{ stats.total }}</h3>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card shadow-sm text-center p-3 bg-warning text-dark">
+    <h6>Pending</h6>
+    <h3>{{ stats.pending }}</h3>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card shadow-sm text-center p-3 bg-success text-white">
+    <h6>Resolved</h6>
+    <h3>{{ stats.resolved }}</h3>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card shadow-sm text-center p-3 bg-danger text-white">
+    <h6>Escalated</h6>
+    <h3>{{ stats.escalated }}</h3>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- 🔷 Category Breakdown -->
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+```
+  <h5 class="mb-3">Grievances by Category</h5>
+
+  {% if category_data %}
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Category</th>
+        <th>Count</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for cat, count in category_data.items() %}
+      <tr>
+        <td>{{ cat }}</td>
+        <td>{{ count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="alert alert-info">
+      No data available.
+    </div>
+  {% endif %}
+
+</div>
+```
+
+  </div>
+
+  <!-- 🔷 Chart (Optional but recommended) -->
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="mb-3">Category Distribution</h5>
+      <canvas id="categoryChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- 🔷 Chart.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const data = {
+  labels: {{ category_data | dictsort | map(attribute=0) | list | tojson }},
+  datasets: [{
+    label: 'Grievances',
+    data: {{ category_data | dictsort | map(attribute=1) | list | tojson }},
+    borderWidth: 1
+  }]
+};
+
+new Chart(document.getElementById('categoryChart'), {
+  type: 'bar',
+  data: data
+});
+</script>
+
+{% endblock %}

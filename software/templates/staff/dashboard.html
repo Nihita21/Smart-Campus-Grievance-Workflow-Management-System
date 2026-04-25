@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Staff Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2 class="fw-bold mb-3">Staff Dashboard</h2>
+  <p class="text-muted">Manage assigned grievances</p>
+
+  <!-- 🔷 Stats -->
+
+  <div class="row mb-4">
+
+
+<div class="col-md-4">
+  <div class="card shadow-sm text-center p-3 bg-primary text-white">
+    <h6>Total Assigned</h6>
+    <h3>{{ stats.total }}</h3>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card shadow-sm text-center p-3 bg-warning text-dark">
+    <h6>Pending</h6>
+    <h3>{{ stats.pending }}</h3>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card shadow-sm text-center p-3 bg-success text-white">
+    <h6>Resolved</h6>
+    <h3>{{ stats.resolved }}</h3>
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- 🔷 Grievances Table -->
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+
+  <h5 class="mb-3">Assigned Grievances</h5>
+
+  {% if grievances %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for g in grievances %}
+        <tr>
+
+          <td>{{ loop.index }}</td>
+
+          <td>{{ g.title }}</td>
+
+          <td>{{ g.category_name }}</td>
+
+          <td>
+            {% if g.status == 'resolved' %}
+              <span class="badge bg-success">Resolved</span>
+            {% else %}
+              <span class="badge bg-warning text-dark">Pending</span>
+            {% endif %}
+          </td>
+
+          <td>
+            {% if g.priority == 'high' %}
+              <span class="badge bg-danger">High</span>
+            {% elif g.priority == 'medium' %}
+              <span class="badge bg-primary">Medium</span>
+            {% else %}
+              <span class="badge bg-info text-dark">Low</span>
+            {% endif %}
+          </td>
+
+          <td>
+            <a href="{{ url_for('staff.view_grievance', grievance_id=g._id) }}"
+               class="btn btn-sm btn-outline-primary">
+              View
+            </a>
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  {% else %}
+    <div class="alert alert-info">
+      No assigned grievances.
+    </div>
+  {% endif %}
+
+</div>
+
+
+  </div>
+
+</div>
+{% endblock %}

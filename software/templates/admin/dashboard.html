@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2 class="fw-bold mb-4">Admin Dashboard</h2>
+
+  <!-- 🔷 Stats Cards -->
+
+  <div class="row mb-4">
+
+
+<div class="col-md-3">
+  <div class="card shadow-sm border-0 bg-primary text-white">
+    <div class="card-body">
+      <h6>Total Grievances</h6>
+      <h3>{{ stats.total }}</h3>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card shadow-sm border-0 bg-warning text-dark">
+    <div class="card-body">
+      <h6>Pending</h6>
+      <h3>{{ stats.pending }}</h3>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card shadow-sm border-0 bg-success text-white">
+    <div class="card-body">
+      <h6>Resolved</h6>
+      <h3>{{ stats.resolved }}</h3>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card shadow-sm border-0 bg-danger text-white">
+    <div class="card-body">
+      <h6>Escalated</h6>
+      <h3>{{ stats.escalated }}</h3>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- 🔷 Grievance Table -->
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+
+  <h5 class="mb-3">Recent Grievances</h5>
+
+  {% if grievances %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Submitted On</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for g in grievances %}
+        <tr>
+          <td>{{ loop.index }}</td>
+
+          <td>{{ g.title }}</td>
+
+          <td>{{ g.category_name }}</td>
+
+          <!-- Status -->
+          <td>
+            {% if g.status == 'resolved' %}
+              <span class="badge bg-success">Resolved</span>
+            {% elif g.status == 'pending' %}
+              <span class="badge bg-warning text-dark">Pending</span>
+            {% elif g.status == 'escalated' %}
+              <span class="badge bg-danger">Escalated</span>
+            {% else %}
+              <span class="badge bg-secondary">{{ g.status }}</span>
+            {% endif %}
+          </td>
+
+          <!-- Priority -->
+          <td>
+            {% if g.priority == 'high' %}
+              <span class="badge bg-danger">High</span>
+            {% elif g.priority == 'medium' %}
+              <span class="badge bg-primary">Medium</span>
+            {% else %}
+              <span class="badge bg-info text-dark">Low</span>
+            {% endif %}
+          </td>
+
+          <td>
+            {{ g.created_at.strftime('%d %b %Y') if g.created_at else '-' }}
+          </td>
+
+          <td>
+            <a href="{{ url_for('admin.view_grievance', grievance_id=g._id) }}"
+               class="btn btn-sm btn-outline-primary">
+              View
+            </a>
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  {% else %}
+    <div class="alert alert-info">
+      No grievances found.
+    </div>
+  {% endif %}
+
+</div>
+
+
+  </div>
+
+</div>
+{% endblock %}

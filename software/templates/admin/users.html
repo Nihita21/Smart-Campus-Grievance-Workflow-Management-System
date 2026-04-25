@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2 class="fw-bold mb-4">Manage Users</h2>
+
+  <!-- 🔷 Users Table -->
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+```
+  {% if users %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ loop.index }}</td>
+
+          <td>{{ u.name }}</td>
+
+          <td>{{ u.email }}</td>
+
+          <td>{{ u.phone }}</td>
+
+          <td>
+            {% if u.role == 'admin' %}
+              <span class="badge bg-danger">Admin</span>
+            {% elif u.role == 'staff' %}
+              <span class="badge bg-primary">Staff</span>
+            {% else %}
+              <span class="badge bg-secondary">Student</span>
+            {% endif %}
+          </td>
+
+          <td>
+            {% if u.is_locked %}
+              <span class="badge bg-danger">Locked</span>
+            {% else %}
+              <span class="badge bg-success">Active</span>
+            {% endif %}
+          </td>
+
+          <td>
+            {{ u.created_at.strftime('%d %b %Y') if u.created_at else '-' }}
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  {% else %}
+    <div class="alert alert-info">
+      No users found.
+    </div>
+  {% endif %}
+
+</div>
+```
+
+  </div>
+
+</div>
+{% endblock %}

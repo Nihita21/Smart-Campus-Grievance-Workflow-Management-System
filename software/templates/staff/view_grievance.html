@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2>Grievance Details</h2>
+
+  <div class="card p-3 mb-4">
+    <h4>{{ g.title }}</h4>
+
+    <p><b>Description:</b> {{ g.description }}</p>
+    <p><b>Category:</b> {{ g.category_name }}</p>
+
+    <p><b>Status:</b>
+      {% if g.status == 'resolved' %}
+        <span class="badge bg-success">Resolved</span>
+      {% elif g.status == 'in_progress' %}
+        <span class="badge bg-primary">In Progress</span>
+      {% else %}
+        <span class="badge bg-warning text-dark">Assigned</span>
+      {% endif %}
+    </p>
+
+    <p><b>Priority:</b> {{ g.priority }}</p>
+  </div>
+
+  <div class="card p-3">
+
+    <h5>Update Status</h5>
+
+    <form method="POST" action="{{ url_for('staff.update_status', grievance_id=g._id) }}">
+
+      <div class="mb-3">
+        <label>Status</label>
+        <select name="status" class="form-control">
+          <option value="assigned">Assigned</option>
+          <option value="in_progress">In Progress</option>
+          <option value="resolved">Resolved</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label>Resolution Notes</label>
+        <textarea name="resolution_notes" class="form-control"></textarea>
+      </div>
+
+      <button class="btn btn-success">Update</button>
+    </form>
+
+  </div>
+
+  <br>
+  <a href="{{ url_for('staff.dashboard') }}" class="btn btn-secondary">Back</a>
+
+</div>
+
+{% endblock %}

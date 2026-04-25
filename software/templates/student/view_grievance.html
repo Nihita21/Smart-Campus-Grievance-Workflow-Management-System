@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}View Grievance{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2 class="fw-bold mb-3">Grievance Details</h2>
+
+  <div class="card p-4 shadow-sm">
+
+```
+<!-- Title -->
+<h4 class="fw-semibold">{{ g.title }}</h4>
+
+<hr/>
+
+<!-- Category -->
+<p><strong>Category:</strong> {{ g.category_name if g.category_name else "N/A" }}</p>
+
+<!-- Description -->
+<p><strong>Description:</strong></p>
+<p class="text-muted">{{ g.description }}</p>
+
+<!-- Status -->
+<p>
+  <strong>Status:</strong>
+  {% if g.status == 'pending' %}
+    <span class="badge bg-warning text-dark">Pending</span>
+  {% elif g.status == 'resolved' %}
+    <span class="badge bg-success">Resolved</span>
+  {% elif g.status == 'escalated' %}
+    <span class="badge bg-danger">Escalated</span>
+  {% else %}
+    <span class="badge bg-secondary">{{ g.status }}</span>
+  {% endif %}
+</p>
+
+<!-- Priority -->
+<p>
+  <strong>Priority:</strong>
+  {% if g.priority == 'high' %}
+    <span class="badge bg-danger">High</span>
+  {% elif g.priority == 'medium' %}
+    <span class="badge bg-primary">Medium</span>
+  {% else %}
+    <span class="badge bg-info text-dark">Low</span>
+  {% endif %}
+</p>
+
+<!-- Attachment -->
+{% if g.attachment_path %}
+  <p>
+    <strong>Attachment:</strong>
+    <a href="{{ g.attachment_path }}" target="_blank">View File</a>
+  </p>
+{% endif %}
+
+<!-- Created Date -->
+<p>
+  <strong>Submitted On:</strong>
+  {{ g.created_at.strftime('%d %b %Y') if g.created_at else '-' }}
+</p>
+```
+
+  </div>
+
+  <!-- Feedback Section -->
+
+  <div class="card p-4 mt-4 shadow-sm">
+    <h5>Feedback</h5>
+
+```
+{% if feedback %}
+  {% for f in feedback %}
+    <div class="border rounded p-2 mb-2">
+      <strong>Rating:</strong> {{ f.rating }}/5<br/>
+      <span class="text-muted">{{ f.comments }}</span>
+    </div>
+  {% endfor %}
+{% else %}
+  <p class="text-muted">No feedback yet.</p>
+{% endif %}
+```
+
+  </div>
+
+  <!-- Submit Feedback -->
+
+{% if g.status == 'resolved' %}
+
+  <div class="card p-4 mt-4 shadow-sm">
+    <h5>Submit Feedback</h5>
+
+```
+<form method="POST" action="{{ url_for('student.submit_feedback', grievance_id=g._id) }}">
+  <div class="mb-3">
+    <label class="form-label">Rating</label>
+    <select name="rating" class="form-select">
+      <option value="5">5 - Excellent</option>
+      <option value="4">4 - Good</option>
+      <option value="3" selected>3 - Average</option>
+      <option value="2">2 - Poor</option>
+      <option value="1">1 - Very Poor</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Comments</label>
+    <textarea name="comments" class="form-control" rows="3"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit Feedback</button>
+</form>
+```
+
+  </div>
+  {% endif %}
+
+  <!-- Back Button -->
+
+  <div class="mt-3">
+    <a href="{{ url_for('student.my_grievances') }}" class="btn btn-secondary">
+      ← Back to Grievances
+    </a>
+  </div>
+
+</div>
+{% endblock %}

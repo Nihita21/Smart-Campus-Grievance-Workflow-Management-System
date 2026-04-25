@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}View Grievance{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2 class="fw-bold mb-4">Grievance Details</h2>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+```
+  <h4 class="mb-3">{{ g.title }}</h4>
+
+  <p><strong>Description:</strong><br>
+    {{ g.description }}
+  </p>
+
+  <p><strong>Category:</strong>
+    {{ category.name if category else 'N/A' }}
+  </p>
+
+  <p><strong>Status:</strong>
+    {% if g.status == 'resolved' %}
+      <span class="badge bg-success">Resolved</span>
+    {% elif g.status == 'pending' %}
+      <span class="badge bg-warning text-dark">Pending</span>
+    {% elif g.status == 'escalated' %}
+      <span class="badge bg-danger">Escalated</span>
+    {% else %}
+      <span class="badge bg-secondary">{{ g.status }}</span>
+    {% endif %}
+  </p>
+
+  <p><strong>Priority:</strong>
+    {% if g.priority == 'high' %}
+      <span class="badge bg-danger">High</span>
+    {% elif g.priority == 'medium' %}
+      <span class="badge bg-primary">Medium</span>
+    {% else %}
+      <span class="badge bg-info text-dark">Low</span>
+    {% endif %}
+  </p>
+
+  <p><strong>Submitted On:</strong>
+    {{ g.created_at.strftime('%d %b %Y, %I:%M %p') if g.created_at else '-' }}
+  </p>
+
+</div>
+```
+
+  </div>
+
+  <!-- 🔷 Assign Section -->
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+```
+  <h5 class="mb-3">Assign to Staff</h5>
+
+  <form method="POST"
+        action="{{ url_for('admin.assign_grievance', grievance_id=g._id) }}">
+
+    <div class="mb-3">
+      <label class="form-label">Select Staff</label>
+      <select name="staff_id" class="form-control" required>
+        <option value="">-- Select Staff --</option>
+        {% for s in staff_list %}
+          <option value="{{ s._id }}">{{ s.name }} ({{ s.email }})</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Department (optional)</label>
+      <select name="dept_id" class="form-control">
+        <option value="">-- Select Department --</option>
+        {% for d in departments %}
+          <option value="{{ d._id }}">{{ d.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+      Assign Grievance
+    </button>
+
+  </form>
+
+</div>
+```
+
+  </div>
+
+  <!-- 🔷 Back Button -->
+
+  <a href="{{ url_for('admin.all_grievances') }}" class="btn btn-secondary">
+    ← Back to All Grievances
+  </a>
+
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}My Grievances{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="fw-bold mb-3">My Grievances</h2>
+  <p class="text-muted">Track all your submitted complaints.</p>
+
+{% if grievances %} <div class="table-responsive mt-3"> <table class="table table-bordered table-hover align-middle"> <thead class="table-dark"> <tr> <th>#</th> <th>Title</th> <th>Category</th> <th>Status</th> <th>Priority</th> <th>Submitted On</th> <th>Action</th> </tr> </thead> <tbody>
+{% for g in grievances %} <tr> <td>{{ loop.index }}</td> <td>{{ g.title }}</td> <td>{{ g.category }}</td>
+
+```
+        <!-- Status Badge -->
+        <td>
+          {% if g.status == 'Pending' %}
+            <span class="badge bg-warning text-dark">Pending</span>
+          {% elif g.status == 'Resolved' %}
+            <span class="badge bg-success">Resolved</span>
+          {% else %}
+            <span class="badge bg-secondary">{{ g.status }}</span>
+          {% endif %}
+        </td>
+
+        <!-- Priority Badge -->
+        <td>
+            {% if g.priority == 'high' %}
+          <span class="badge bg-danger">High</span>
+            {% elif g.priority == 'medium' %}
+          <span class="badge bg-primary">Medium</span>
+            {% else %}
+          <span class="badge bg-info text-dark">Low</span>
+            {% endif %}
+        </td>
+
+        <td>{{ g.created_at.strftime('%d %b %Y') if g.created_at else '—' }}</td>
+
+        <td>
+          <a href="{{ url_for('student.view_grievance', grievance_id=g._id) }}" class="btn btn-sm btn-outline-primary">
+            View
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+```
+
+{% else %} <div class="alert alert-info mt-4">
+No grievances found. <a href="{{ url_for('student.submit_grievance') }}">Submit one now</a>. </div>
+{% endif %}
+
+</div>
+{% endblock %}

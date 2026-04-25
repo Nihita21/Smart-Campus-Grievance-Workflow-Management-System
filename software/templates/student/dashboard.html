@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="fw-bold mb-3">Student Dashboard</h2>
+  <p class="text-muted">Welcome back, {{ current_user.email }}</p>
+
+  <div class="row mt-4">
+
+
+<!-- Total Grievances -->
+<div class="col-md-4 mb-3">
+  <div class="card shadow-sm p-3 text-center">
+    <h5>Total Grievances</h5>
+    <h3 class="fw-bold">{{ stats.total }}</h3>
+  </div>
+</div>
+
+<!-- Pending -->
+<div class="col-md-4 mb-3">
+  <div class="card shadow-sm p-3 text-center">
+    <h5>Pending</h5>
+    <h3 class="fw-bold text-warning">{{ stats.pending }}</h3>
+  </div>
+</div>
+
+<!-- Resolved -->
+<div class="col-md-4 mb-3">
+  <div class="card shadow-sm p-3 text-center">
+    <h5>Resolved</h5>
+    <h3 class="fw-bold text-success">{{ stats.resolved }}</h3>
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- Notifications -->
+
+  <div class="card mt-4 p-3">
+    <h5>Notifications</h5>
+    {% if notifications %}
+      <ul class="list-group">
+        {% for n in notifications %}
+          <li class="list-group-item">
+            {{ n.message }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">No notifications</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

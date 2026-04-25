@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Manage Categories{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <h2 class="fw-bold mb-4">Manage Categories</h2>
+
+  <!-- 🔷 Add Category -->
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+  <h5 class="mb-3">Add New Category</h5>
+
+  <form method="POST" action="{{ url_for('admin.add_category') }}">
+
+    <div class="mb-3">
+      <label class="form-label">Category Name</label>
+      <input type="text" name="name" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">SLA (Days)</label>
+      <input type="number" name="sla_days" class="form-control" value="3" min="1">
+    </div>
+
+    <button type="submit" class="btn btn-success">
+      Add Category
+    </button>
+
+  </form>
+
+</div>
+
+
+  </div>
+
+  <!-- 🔷 Category List -->
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+
+  <h5 class="mb-3">Existing Categories</h5>
+
+  {% if categories %}
+  <table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>SLA (Days)</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for c in categories %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ c.name }}</td>
+        <td>{{ c.sla_days if c.sla_days else '-' }}</td>
+        <td>
+          {{ c.created_at.strftime('%d %b %Y') if c.created_at else '-' }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+  {% else %}
+    <div class="alert alert-info">
+      No categories available.
+    </div>
+  {% endif %}
+
+</div>
+
+
+  </div>
+
+</div>
+{% endblock %}
