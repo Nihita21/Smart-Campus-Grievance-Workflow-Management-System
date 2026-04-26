@@ -3,7 +3,7 @@ from datetime import timedelta
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'scgwms-secret-key-2026')
-    MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/scgwms_db')
+    MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://nihitagupta:Nihita@cluster0.dv6wreg.mongodb.net/scgwms_db?retryWrites=true&w=majority')
     PERMANENT_SESSION_LIFETIME = timedelta(hours=2)
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024  # 5 MB max upload
     UPLOAD_FOLDER = 'static/uploads'
