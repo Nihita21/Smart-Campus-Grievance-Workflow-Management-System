@@ -9,7 +9,7 @@
 
   <div class="card p-4 shadow-sm">
 
-```
+
 <!-- Title -->
 <h4 class="fw-semibold">{{ g.title }}</h4>
 
@@ -61,7 +61,7 @@
   <strong>Submitted On:</strong>
   {{ g.created_at.strftime('%d %b %Y') if g.created_at else '-' }}
 </p>
-```
+
 
   </div>
 
@@ -70,7 +70,7 @@
   <div class="card p-4 mt-4 shadow-sm">
     <h5>Feedback</h5>
 
-```
+
 {% if feedback %}
   {% for f in feedback %}
     <div class="border rounded p-2 mb-2">
@@ -81,7 +81,7 @@
 {% else %}
   <p class="text-muted">No feedback yet.</p>
 {% endif %}
-```
+
 
   </div>
 
@@ -92,7 +92,7 @@
   <div class="card p-4 mt-4 shadow-sm">
     <h5>Submit Feedback</h5>
 
-```
+
 <form method="POST" action="{{ url_for('student.submit_feedback', grievance_id=g._id) }}">
   <div class="mb-3">
     <label class="form-label">Rating</label>
@@ -112,7 +112,7 @@
 
   <button type="submit" class="btn btn-primary">Submit Feedback</button>
 </form>
-```
+
 
   </div>
   {% endif %}
