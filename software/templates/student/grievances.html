@@ -10,7 +10,7 @@
 {% if grievances %} <div class="table-responsive mt-3"> <table class="table table-bordered table-hover align-middle"> <thead class="table-dark"> <tr> <th>#</th> <th>Title</th> <th>Category</th> <th>Status</th> <th>Priority</th> <th>Submitted On</th> <th>Action</th> </tr> </thead> <tbody>
 {% for g in grievances %} <tr> <td>{{ loop.index }}</td> <td>{{ g.title }}</td> <td>{{ g.category }}</td>
 
-```
+
         <!-- Status Badge -->
         <td>
           {% if g.status == 'Pending' %}
@@ -45,7 +45,7 @@
     </tbody>
   </table>
 </div>
-```
+
 
 {% else %} <div class="alert alert-info mt-4">
 No grievances found. <a href="{{ url_for('student.submit_grievance') }}">Submit one now</a>. </div>
